@@ -2,7 +2,7 @@ CXX = g++
 CXXFLAGS = -Wall -std=c++17
 LDFLAGS =
 
-SRC = batputer.cpp tinyArgs/tinyArgs.cpp
+SRC = batputer.cpp tinyArgs/src/tinyArgs.cpp
 OBJ = $(SRC:.cpp=.o)
 EXEC = batputer
 

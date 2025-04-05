@@ -1,4 +1,4 @@
-#include "tinyArgs/tinyArgs.hpp"
+#include "tinyArgs/include/tinyArgs.hpp"
 
 
 #include <iostream>
