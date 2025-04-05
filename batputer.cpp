@@ -124,7 +124,7 @@ void showTypo()
 
 int main()
 {
-    if(OSTYPE != "UNIX")
+    if(OSTYPE != std::string("UNIX"))
     {
         std::cout << "This tool is not developed for your OS. Run the tool on a Unix-like OS.";
         return 0;
