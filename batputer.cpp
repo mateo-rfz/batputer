@@ -1,5 +1,9 @@
+#include "tinyArgs/tinyArgs.hpp"
+
+
 #include <iostream>
 #include <fstream>
+
 
 
 
@@ -14,6 +18,7 @@
 
 
 #define PATH "/sys/class/power_supply/BAT0/"
+#define VERSION "0.0.1"
 
 
 
@@ -122,7 +127,7 @@ void showTypo()
 
 
 
-int main()
+int main(int argc , char * argv[])
 {
     if(OSTYPE != std::string("UNIX"))
     {
@@ -131,14 +136,54 @@ int main()
     }
 
 
-    showTypo();
-    std::cout << std::endl;
+    targs::TinyArgs ta(argc , argv);
 
-    std::cout << "Battery stat : " << readItem("capacity") << std::endl;
-    std::cout << "Battery level : " << readItem("capacity_level") << std::endl;
-    std::cout << "Battery Status : " << readItem("status") << std::endl;
-    std::cout << "Battery tech : " << readItem("technology") << std::endl;
-    std::cout << "Battery Health : " << calculateBatteryHealth() << std::endl;
-    std::cout << "Plug status : " << plugStatus() << std::endl;
+
+    bool helpFlag = ta.getLongFlag("--help" , "show help msg") || ta.getShortFlag("-h" , "show help msg");
+    bool verbose = ta.getLongFlag("--verbose" , "verbose mode") || ta.getShortFlag("-vv" , "verbose mode");
+    bool versionN = ta.getLongFlag("--version" , "show version") || ta.getShortFlag("-v" , "show version");
+
     
+    if(helpFlag)
+    {
+        showTypo();
+        std::cout << std::endl;
+
+        std::cout << ta.help();
+    }
+
+
+    if(verbose)
+    {
+        showTypo();
+        std::cout << std::endl;
+
+        std::cout << "Battery stat : " << readItem("capacity") << std::endl;
+        std::cout << "Battery level : " << readItem("capacity_level") << std::endl;
+        std::cout << "Battery Status : " << readItem("status") << std::endl;
+        std::cout << "Battery tech : " << readItem("technology") << std::endl;
+        std::cout << "Battery Health : " << calculateBatteryHealth() << std::endl;
+        std::cout << "Plug status : " << plugStatus() << std::endl;
+    }
+
+
+    if(versionN)
+    {
+        showTypo();
+        std::cout << std::endl;
+
+        std::cout << "Version : " << VERSION << std::endl;
+    }
+
+
+    std::vector<std::string> falgs = ta.getAllFlags();
+    if(falgs.empty())
+    {
+        showTypo();
+        std::cout << std::endl;
+
+        std::cout << "Battery stat : " << readItem("capacity") << std::endl;
+        std::cout << "Battery Status : " << readItem("status") << std::endl;
+        std::cout << "Battery Health : " << calculateBatteryHealth() << std::endl;
+    }
 }
