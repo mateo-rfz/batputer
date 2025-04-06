@@ -78,34 +78,39 @@ std::string plugStatus()
 
 std::string calculateBatteryHealth()
 {
-    std::string filePathEnergyFullDesign = std::string(PATH) + "energy_full_design";
-    std::string filePathEnergyFull = std::string(PATH) + "energy_full";
+    std::string names[2] = {"energy", "charge"};
+    int energyFullDesign = 0, energyFull = 0;
 
-    //efd is short for enery full design
-    std::ifstream fileEFD(filePathEnergyFullDesign);
-    std::ifstream fileEF(filePathEnergyFull);
-
-    std::string efd , ef;
-    
-    if (fileEFD.is_open() && fileEF.is_open())
+    for (std::string name : names)
     {
-        std::getline(fileEFD , efd);
-        std::getline(fileEF , ef);
+        std::string filePathEnergyFullDesign = std::string(PATH) + name + "_full_design";
+        std::string filePathEnergyFull = std::string(PATH) + name + "_full";
 
-        fileEFD.close();fileEF.close();
+        // Open files
+        std::ifstream fileEFD(filePathEnergyFullDesign);
+        std::ifstream fileEF(filePathEnergyFull);
+
+        if (fileEFD.is_open() && fileEF.is_open())
+        {
+            //efd is short for energy full design
+            std::string efd, ef;
+            std::getline(fileEFD, efd);
+            std::getline(fileEF, ef);
+
+            fileEFD.close();
+            fileEF.close();
+
+            energyFullDesign = std::stoi(efd);
+            energyFull = std::stoi(ef);
+
+            return std::to_string(
+                static_cast<int>((static_cast<float>(energyFull) / energyFullDesign) * 100)) + "%";
+        }
     }
-    else 
-    {
-        return "ERROR";
-    }
 
-    int energyFullDesign = std::stoi(efd);
-    int energyFull = std::stoi(ef);
-
-    return std::to_string(
-        static_cast<int>(
-            (static_cast<float>(energyFull) / energyFullDesign) * 100)) + "%";
+    return "ERROR";
 }
+
 
 
 
