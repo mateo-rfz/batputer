@@ -18,7 +18,7 @@
 
 
 #define PATH "/sys/class/power_supply/BAT0/"
-#define VERSION "0.0.1"
+#define VERSION "0.0.2"
 
 
 
